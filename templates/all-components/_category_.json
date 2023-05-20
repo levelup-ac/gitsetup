@@ -1,0 +1,8 @@
+{
+  "label": "All Components",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Big picture of all component working togther"
+  }
+}
