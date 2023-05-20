@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkb=self.webpackChunkkb||[]).push([[121],{8070:e=>{e.exports=JSON.parse('[{"label":"excalidraw","permalink":"/tags/excalidraw","count":4}]')}}]);
