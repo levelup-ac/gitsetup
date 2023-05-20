@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkb=self.webpackChunkkb||[]).push([[121],{8070:a=>{a.exports=JSON.parse('[{"label":"partial","permalink":"/tags/partial","count":3},{"label":"excalidraw","permalink":"/tags/excalidraw","count":4}]')}}]);
