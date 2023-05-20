@@ -52,9 +52,9 @@ mkdir -p "$dir" \
   && echo '#############################################################################' \
   && sed -i "s~top~$PARSED_URL~g" infospot/docusaurus.config.js \
   && sed -i "s~RESOURCE-NAME~$RESOURCE_NAME~g" infospot/docusaurus.config.js \
-  && sed -i "s~top~$PARSED_URL~g" infospot/src/pages/index.js \
   && sed -i "s~top~$PARSED_URL~g" readme.md \
   && git init \
   && git add . \
   && git commit --allow-empty -m "$COMMIT_MESSAGE"
 
+  ## && sed -i "s~top~$PARSED_URL~g" infospot/src/pages/index.js \
