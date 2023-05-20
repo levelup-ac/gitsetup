@@ -43,18 +43,16 @@ dir=$(test -z "$2" && echo "." || echo "$2")
 mkdir -p "$dir" \
   && cd "$dir" \
   && gitdirexists \
-  && git clone git@aa-github:levelup-ac/tool-git.setup.git tmp \
-  && cp -r ./tmp/* . \
-  && cp -r ./tmp/.gitlab-ci.yml . \
-  && cp -r ./tmp/.gitignore . \
-  && rm -rf tmp \
-  && rm -rf git.setup \
+  && curl -L -o gitsetup-main.zip https://github.com/levelup-ac/gitsetup/archive/refs/heads/main.zip && bsdtar xvf gitsetup-main.zip \
+  && cp -r ./gitsetup-main/templates/* . \
+  && cp -r ./gitsetup-main/templates/.git* . \
+  && rm -rf gitsetup-* \
   && echo '#############################################################################' \
   && echo "### $PARSED_URL  >>> is the Parsed URL KEY                                ###" \
   && echo '#############################################################################' \
-  && sed -i "s~top~$PARSED_URL~g" doc/docusaurus.config.js \
-  && sed -i "s~RESOURCE-NAME~$RESOURCE_NAME~g" doc/docusaurus.config.js \
-  && sed -i "s~top~$PARSED_URL~g" doc/src/pages/index.js \
+  && sed -i "s~top~$PARSED_URL~g" infospot/docusaurus.config.js \
+  && sed -i "s~RESOURCE-NAME~$RESOURCE_NAME~g" infospot/docusaurus.config.js \
+  && sed -i "s~top~$PARSED_URL~g" infospot/src/pages/index.js \
   && sed -i "s~top~$PARSED_URL~g" readme.md \
   && git init \
   && git add . \
