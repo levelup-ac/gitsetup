@@ -1,8 +1,8 @@
 {
-  "label": "Business Flows",
+  "label": "B > Business Flows",
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "The way of money flow and charts of interest"
+    "description": "Market and business analysis regarding the solution."
   }
 }
