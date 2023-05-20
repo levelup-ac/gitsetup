@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# reset environment variables that could interfere with normal usage
+export GREP_OPTIONS=
+# put all utility functions here
+
+URL="$1/"
+PARSED_URL=$(echo $URL | sed 's_.*/stk/\(.*\)/.*_\1_')
+RESOURCE_NAME=$(grep -o '[^\/]\+$' <<<$PARSED_URL)
+
+# make a temporary file
+git_extra_mktemp() {
+    mktemp -t "$(basename "$2")".XXXXXXX
+}
+
+git_extra_default_branch() {
+    local extras_default_branch init_default_branch
+    extras_default_branch=$(git config --get git-extras.default-branch)
+    init_default_branch=$(git config --get init.defaultBranch)
+    if [ -n "$extras_default_branch" ]; then
+        echo "$extras_default_branch"
+    elif [ -n "$init_default_branch" ]; then
+        echo "$init_default_branch"
+    else
+        echo "main"
+    fi
+}
+
+COMMIT_MESSAGE='Initial commit'
+
+if [ "$2" == "-m" ]; then
+    COMMIT_MESSAGE=$3
+    shift; shift
+fi
+
+gitdirexists(){
+    if [ -d ".git" ]; then
+        echo ".git directory already exists, aborting"
+        exit 1
+    fi
+}
+
+dir=$(test -z "$2" && echo "." || echo "$2")
+mkdir -p "$dir" \
+  && cd "$dir" \
+  && gitdirexists \
+  && git clone git@aa-github:levelup-ac/tool-git.setup.git tmp \
+  && cp -r ./tmp/* . \
+  && cp -r ./tmp/.gitlab-ci.yml . \
+  && cp -r ./tmp/.gitignore . \
+  && rm -rf tmp \
+  && rm -rf git.setup \
+  && echo '#############################################################################' \
+  && echo "### $PARSED_URL  >>> is the Parsed URL KEY                                ###" \
+  && echo '#############################################################################' \
+  && sed -i "s~top~$PARSED_URL~g" doc/docusaurus.config.js \
+  && sed -i "s~RESOURCE-NAME~$RESOURCE_NAME~g" doc/docusaurus.config.js \
+  && sed -i "s~top~$PARSED_URL~g" doc/src/pages/index.js \
+  && sed -i "s~top~$PARSED_URL~g" readme.md \
+  && git init \
+  && git add . \
+  && git commit --allow-empty -m "$COMMIT_MESSAGE"
+
