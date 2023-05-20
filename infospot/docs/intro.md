@@ -1,7 +1,9 @@
 ---
-sidebar_position: 1
+# highlight-next-line
 slug: /
 ---
+
+##### sidebar_position: 1
 
 # Tutorial Intro
 
