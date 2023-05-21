@@ -67,10 +67,10 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'My Site',
+        title: 'PROJECT_NAME',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'PROJECT_NAME Logo',
+          src: 'img/gitsetup-logo.svg',
         },
         items: [
         //  {
@@ -130,7 +130,7 @@ const config = {
         //    ],
         //  },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} ORGANIZATION_NAME, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
