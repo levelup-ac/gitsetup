@@ -8,7 +8,7 @@ on:
       - main
     paths:
       - '.github/workflows/deploy.yml'
-      - 'infospot/**'
+      - 'docspot/**'
   pull_request:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     defaults:
       run:
-        working-directory: infospot
+        working-directory: docspot
     steps:
       - uses: actions/checkout@v3
 
@@ -37,9 +37,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache.outputs.YARN_CACHE_DIR }}
-          key: ${{ runner.os }}-infospot-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-docspot-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-infospot-
+            ${{ runner.os }}-docspot-
 
       - run: yarn install --frozen-lockfile
       - run: yarn build
@@ -52,7 +52,7 @@ jobs:
           cname: gitsetup.levelup.ac
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          publish_dir: ./infospot/build
+          publish_dir: ./docspot/build
 
 # ---
 # reg: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
