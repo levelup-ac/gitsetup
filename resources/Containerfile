@@ -1,0 +1,9 @@
+
+FROM ghcr.io/charmbracelet/gum:v0.10.0
+
+RUN apk add git
+
+
+# FROM gcr.io/distroless/static
+# COPY gum /usr/local/bin/gum
+# ENTRYPOINT [ "/usr/local/bin/gum" ]
