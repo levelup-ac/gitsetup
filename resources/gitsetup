@@ -1,21 +1,113 @@
 #! /bin/sh
 
 
+# ----------------------- Presentation
+
+gum style --border normal --margin "1" --padding "1 2" --border-foreground 212 "Hello there! Welcome to $(gum style --foreground 212 'GitSetup')."
+
+# ----------------------- Functions
+
+CHOICE='NO'
+
+set_repo_variables() {
+
+	GITREPO_URL=$(gum input --placeholder \
+    		"Pase here the place for the GITREPO: example > github.com/levelup-ac/gitsetup")
+	DOCSPOT_URL=$(gum input --placeholder \
+    		"Pase here the place for the DOCSPOT: example > gitsetup.levelup.ac")
+
+}
+
+set_repo_result(){
+	set_repo_variables
+	echo -e "Please check the info down below!"
+	echo -e "---------------------------------"
+	echo -e "Initial GIT repo will be found in: $(gum style --foreground 212 "$GITREPO_URL")"
+	echo -e "Initial DOC spot will be found in: $(gum style --foreground 212 "$DOCSPOT_URL")"
+	echo -e "---------------------------------"
+	echo -e "Do you think that is $(gum style --bold "OK")?"
+	CHOICE=$(gum choose --item.foreground 250 "YES" "NO")
+}
+
+
+# ----------------------- Actions
+
+while [[ $CHOICE == "NO" ]];
+do
+  set_repo_result
+done
+
+echo -e "-------------------- $(gum style --bold "$CHOICE")"
+echo "Then let's do GitSetup in your directory!"
+
+# ----------------------- Legacy 
+
+export GREP_OPTIONS=
+
+git_extra_mktemp() {
+    mktemp -t "$(basename "$2")".XXXXXXX
+}
+
+git_extra_default_branch() {
+    local extras_default_branch init_default_branch
+    extras_default_branch=$(git config --get git-extras.default-branch)
+    init_default_branch=$(git config --get init.defaultBranch)
+    if [ -n "$extras_default_branch" ]; then
+        echo "$extras_default_branch"
+    elif [ -n "$init_default_branch" ]; then
+        echo "$init_default_branch"
+    else
+        echo "main"
+    fi
+}
+
+COMMIT_MESSAGE='GitSetup: initial commit'
+
+if [ "$2" == "-m" ]; then
+    COMMIT_MESSAGE=$3
+    shift; shift
+fi
+
+gitdirexists(){
+    if [ -d ".git" ]; then
+	echo -e "$(gum style --bold ".git") directory already exists, $(gum style --bold "aborting")!!"
+        exit 1
+    fi
+}
+
+dir=$(test -z "$2" && echo "." || echo "$2")
+
+mkdir -p "$dir" \
+  && cd "$dir" \
+  && gitdirexists \
+  && curl -L -o gitsetup-main.zip https://github.com/levelup-ac/gitsetup/archive/refs/heads/main.zip && bsdtar xvf gitsetup-main.zip \
+  && cp -r ./gitsetup-main/templates/* . \
+  && cp -r ./gitsetup-main/templates/.git* . \
+  && rm -rf gitsetup-* \
+  && git init \
+  && git add . \
+  && git commit --allow-empty -m "$COMMIT_MESSAGE"
+
+## --------------- Done!
+
+gum style \
+	--foreground 212 --border-foreground 212 --border double \
+	--margin "1 2" --padding "2 4" \
+	"Done!:" \
+    	"$COMMIT_MESSAGE"
 
 
 
 
+  ##  && echo '#############################################################################' \
+  ##  && echo "### $PARSED_URL  >>> is the Parsed URL KEY                                ###" \
+  ##  && echo '#############################################################################' \
+  ## && sed -i "s~top~$PARSED_URL~g" infospot/src/pages/index.js \
+  ## && sed -i "s~top~$PARSED_URL~g" infospot/docusaurus.config.js \
+  ## && sed -i "s~RESOURCE-NAME~$RESOURCE_NAME~g" infospot/docusaurus.config.js \
+  ## && sed -i "s~top~$PARSED_URL~g" readme.md \
 
-GITREPO_URL=$(gum input --placeholder \
-    "Pase here the place for the GITREPO: example > github.com/levelup-ac/gitsetup")
-
-DOCSPOT_URL=$(gum input --placeholder \
-    "Pase here the place for the DOCSPOT: example > gitsetup.levelup.ac")
-
-echo $GITREPO_URL
-echo $DOCSPOT_URL
-
-
+###--------------------------------------------------------------------------------------------- original
 
 ###   #!/usr/bin/env bash
 ###   # reset environment variables that could interfere with normal usage
@@ -50,12 +142,6 @@ echo $DOCSPOT_URL
 ###       COMMIT_MESSAGE=$3
 ###       shift; shift
 ###   fi
-
-
-
-
-
-
 
 ###   gitdirexists(){
 ###       if [ -d ".git" ]; then
