@@ -13,9 +13,13 @@ set_repo_variables() {
 
 	GITREPO_URL=$(gum input --placeholder \
     		"Pase here the place for the GITREPO: example > github.com/levelup-ac/gitsetup")
+
 	DOCSPOT_URL=$(gum input --placeholder \
     		"Pase here the place for the DOCSPOT: example > gitsetup.levelup.ac")
 
+	PROJECT_NAME=${GITREPO_URL##*/}
+
+	ORGANIZATION_NAME=$(echo $GITREPO_URL | sed 's_.*/\(.*\)/.*_\1_')
 }
 
 set_repo_result(){
@@ -24,6 +28,8 @@ set_repo_result(){
 	echo -e "---------------------------------"
 	echo -e "Initial GIT repo will be found in: $(gum style --foreground 212 "$GITREPO_URL")"
 	echo -e "Initial DOC spot will be found in: $(gum style --foreground 212 "$DOCSPOT_URL")"
+	echo -e "Initial DOC spot will be found in: $(gum style --foreground 212 "$PROJECT_NAME")"
+	echo -e "Initial DOC spot will be found in: $(gum style --foreground 212 "$ORGANIZATION_NAME")"
 	echo -e "---------------------------------"
 	echo -e "Do you think that is $(gum style --bold "OK")?"
 	CHOICE=$(gum choose --item.foreground 250 "YES" "NO")
@@ -84,6 +90,8 @@ mkdir -p "$dir" \
   && cp -r ./gitsetup-main/templates/* . \
   && cp -r ./gitsetup-main/templates/.git* . \
   && rm -rf gitsetup-* \
+  && sed -i "s~GITREPO_URL~$GITREPO_URL~g" docspot/docusaurus.config.js \
+  && sed -i "s~PROJECT_NAME~$PROJECT_NAME~g" docspot/docusaurus.config.js \
   && git init \
   && git add . \
   && git commit --allow-empty -m "$COMMIT_MESSAGE"
