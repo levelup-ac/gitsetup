@@ -1,4 +1,4 @@
-image: node:latest
+image: node:18
 
 # allow caching for faster deployment
 cache:
@@ -9,8 +9,10 @@ cache:
 
 pages:
   stage: deploy
+  tags:
+    - shared
   script:
-    - cd doc
+    - cd docspot
     - yarn install
     - yarn build:gitlab
     - rm -rf ../public
@@ -19,6 +21,5 @@ pages:
       paths:
         - public
   only:
-    - master
-    # - main
+    - main
 
